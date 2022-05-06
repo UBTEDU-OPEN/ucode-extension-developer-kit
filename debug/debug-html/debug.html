@@ -1,0 +1,73 @@
+<html>
+  <meta charset="utf-8">
+<body>
+  <div>
+    <h1>调试页面</h1>
+    <div>
+      <h2 id="statusText">socket 已连接</h2>
+      <button id="installButton" onclick="installExtension()" disabled>给所有连接的 uCode 安装插件</button>
+    </div>
+    <div>
+      <h2 style="color: blue">当前连接的 uCode 调试服务: </h2>
+      <ul id="clientList"></ul>
+    </div>
+  </div>
+</body>
+<script>
+  const installButton = document.getElementById('installButton');
+  const statusText = document.getElementById('statusText');
+  const clientList = document.getElementById('clientList');
+  let reconnecting = false;
+  let timeoutTrigger = null;
+  let ws = null;
+
+  function connect() {
+    ws = new WebSocket("ws://localhost:9321?type=debug");
+    ws.onopen = () => {
+      clearTimeout(timeoutTrigger);
+      console.log('调试服务 打开成功');
+      installButton.removeAttribute("disabled");
+      statusText.innerText = `socket 已连接`;
+      statusText.setAttribute('style', 'color: blue');
+    }
+    ws.onclose = () => {
+      reconnect();
+      console.log('调试服务 断开连接');
+      installButton.setAttribute("disabled", "true");
+      statusText.innerText = `socket 已断开`;
+      statusText.setAttribute('style', 'color: red');
+    }
+    ws.onmessage = (evt) => {
+      const msg = JSON.parse(evt.data);
+      switch (msg.cmd) {
+        case 'clientList': 
+          const list = msg.data;
+          clientList.innerHTML = '';
+          list.forEach((client) => {
+            if (client !== 'debug') {
+              const title = client || '无ID';
+              const li = document.createElement('li');
+              li.innerText = title;
+              clientList.appendChild(li);
+            }
+          });
+          break;
+      }
+    }
+  }
+
+  function reconnect() {
+    reconnecting = true;
+    timeoutTrigger = setTimeout(() => {
+        reconnecting = false;
+        connect();
+      }, 5000);
+  }
+
+  function installExtension() {
+    ws?.send(JSON.stringify({ cmd: 'install' }));
+  }
+
+  connect();
+</script>
+</html>
