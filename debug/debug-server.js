@@ -2,7 +2,7 @@
  * 调试服务器
  */
 const { WebSocketServer } = require('ws');
-const { getUCDEXT, getManifest } = require('../lib/make-ucdext');
+const { getUCDEXT, getManifest, copyManifestIcon } = require('../lib/make-ucdext');
 const url = require('url');
 const chalk = require('chalk');
 
@@ -117,9 +117,10 @@ class DebugServer {
     );
   }
 
-  installExtension(client) {
-    const manifest = getManifest();
-    const zip = getUCDEXT();
+  async installExtension(client) {
+    const manifest = await getManifest();
+    await copyManifestIcon(manifest);
+    const zip = getUCDEXT(manifest);
     const d = {
       id: manifest.id,
       content: zip.toBuffer(),

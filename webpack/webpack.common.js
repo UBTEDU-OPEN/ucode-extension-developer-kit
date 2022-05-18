@@ -18,6 +18,14 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+          },
+        ],
+      },
     ],
   },
   resolve: {
@@ -39,10 +47,6 @@ module.exports = {
       patterns: [
         {
           from: 'static/manifest.json',
-          to: '.',
-        },
-        {
-          from: 'static/logo.svg',
           to: '.',
         },
       ],

@@ -1,8 +1,7 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
-const { DEFAULT_STATIC_MANIFEST_PATH } = require('../lib/env');
 const validateManifest = require('../validate');
-const { writeUCDEXT, getManifest } = require('../lib/make-ucdext');
+const { writeUCDEXT, getManifest, copyManifestIcon } = require('../lib/make-ucdext');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -11,8 +10,14 @@ module.exports = merge(common, {
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
-          validateManifest(getManifest(DEFAULT_STATIC_MANIFEST_PATH));
-          writeUCDEXT();
+          getManifest().then((manifest) => {
+            copyManifestIcon(manifest)
+              .then(() => {
+                validateManifest(manifest);
+                writeUCDEXT(manifest);
+              })
+              .catch((err) => process.exit(-1));
+          });
         });
       },
     },

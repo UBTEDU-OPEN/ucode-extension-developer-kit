@@ -2,6 +2,9 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const path = require('path');
 const chalk = require('chalk');
+const { version } = require('../package.json');
+
+console.log(chalk.blue(`uCode Extension Development Kit: v${version}`));
 
 function mergeConfig(config) {
   const mergeConfigPath = path.join(process.cwd(), 'webpack.config.js');
