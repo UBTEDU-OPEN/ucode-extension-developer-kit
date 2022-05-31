@@ -10,6 +10,7 @@ module.exports = merge(common, {
   watch: true,
   watchOptions: {
     ignored: '**/node_modules',
+    aggregateTimeout: 500,
   },
   plugins: [
     {
