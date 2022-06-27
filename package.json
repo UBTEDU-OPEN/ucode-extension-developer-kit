@@ -48,6 +48,6 @@
     "ws": "^8.5.0"
   },
   "publishConfig": {
-    "registry": "http://registry.edu.ubtrobot.com:9601"
+    "registry": "https://edu-registry.ubtrobot.com:9601"
   }
 }
