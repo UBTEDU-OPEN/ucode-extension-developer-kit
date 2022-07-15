@@ -15,7 +15,7 @@
   "scripts": {
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --quiet --fix",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx . --quiet",
-    "prepublishOnly": "npx jest"
+    "test": "jest"
   },
   "license": "MIT",
   "dependencies": {
