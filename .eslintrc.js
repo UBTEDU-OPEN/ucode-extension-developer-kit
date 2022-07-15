@@ -4,12 +4,13 @@ module.exports = {
     es6: true,
     node: true,
     browser: true,
+    'jest/globals': true,
   },
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  plugins: ['prettier'],
+  plugins: ['prettier', 'jest'],
   extends: ['eslint:recommended', 'prettier'],
   rules: {
     quotes: ['error', 'single'],

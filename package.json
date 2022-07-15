@@ -8,12 +8,14 @@
     "cua-hw-udp": "./hardware/udp-tcp-server.js",
     "cua-debug": "./webpack/debug.js",
     "cua-build-prod": "./webpack/prod.js",
-    "cua-build-dev": "./webpack/dev.js"
+    "cua-build-dev": "./webpack/dev.js",
+    "cua-i18n-extract": "./i18n/extract.js"
   },
   "author": "alex.tan@ubtrobot.com",
   "scripts": {
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --quiet --fix",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx . --quiet"
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx . --quiet",
+    "prepublishOnly": "jest"
   },
   "license": "MIT",
   "dependencies": {
@@ -21,6 +23,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@formatjs/cli": "^5.0.2",
     "@types/react": "^16.14.0",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
@@ -29,6 +32,7 @@
     "babel-loader": "8.2.3",
     "buffer": "^6.0.3",
     "chalk": "^4.1.2",
+    "commander": "^9.3.0",
     "copy-webpack-plugin": "6.0.3",
     "crypto-browserify": "3.12.0",
     "eslint": "^8.9.0",
@@ -48,6 +52,10 @@
     "ws": "^8.5.0"
   },
   "publishConfig": {
-    "registry": "https://edu-registry.ubtrobot.com:9601"
+    "registry": "http://10.10.1.132:9601"
+  },
+  "devDependencies": {
+    "eslint-plugin-jest": "^26.2.2",
+    "jest": "^28.1.0"
   }
 }

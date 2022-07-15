@@ -1,22 +1,62 @@
 {
   "$id": "UCODE_EXTERNAL_DEVICE_MANIFEST_SCHEMA",
   "$schema": "http://json-schema.org/schema#",
-  "description": "uCode v4.0 External Device Manifest JSON schema v1.0",
+  "description": "uCode v4.0 External Device Manifest JSON schema v1.1",
+  "definitions": {
+    "IntlMessage": {
+      "type": "object",
+      "required": ["id", "defaultMessage"],
+      "description": "标准翻译对象",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "翻译 ID"
+        },
+        "defaultMessage": {
+          "type": "string",
+          "description": "默认翻译文案"
+        },
+        "description": {
+          "type": "string",
+          "description": "翻译描述, 用于提供给翻译人员更精准翻译"
+        }
+      }
+    },
+    "Semver": {
+      "type": "string",
+      "description": "Semver 版本号规范",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "UUID": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "description": "UUID"
+    },
+    "IMAGE": {
+      "type": "string",
+      "pattern": "(^data:image/svg+xml,)|(^data:image/(png|gif|jpe?g|svg);base64)|(\\.(png|svg|gif|jpe?g)$)|(https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*))",
+      "description": "图片合法校验 base64/URL/文件路径"
+    }
+  },
   "type": "object",
   "required": ["id", "name", "version", "supportModes", "USV"],
   "properties": {
     "id": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "$ref": "#/definitions/UUID",
       "description": "插件 ID, 必须符合 UUID 的格式"
     },
     "name": {
-      "type": "string",
-      "description": "插件 名字, 必填"
+      "description": "插件 名字 *必填, 可以是字符串或者标准的 IntlMessage 对象",
+      "type": ["string", "object"],
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {"$ref": "#/definitions/IntlMessage"}
+      ]
     },
     "version": {
-      "type": "string",
-      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "$ref": "#/definitions/Semver",
       "description": "插件 版本号, 符合 Semver 规范"
     },
     "supportModes": {
@@ -28,17 +68,41 @@
       "description": "插件支持的模式"
     },
     "USV": {
-      "type": "string",
-      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "$ref": "#/definitions/Semver",
       "description": "UCode Standard Version, uCode 开放能力标准 版本号, 必填"
     },
     "icon": {
-      "type": "string",
-      "pattern": "(^data:image/svg+xml,)|(^data:image/(png|gif|jpe?g|svg);base64)|(\\.(png|svg|gif|jpe?g)$)|(https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*))",
+      "$ref": "#/definitions/IMAGE",
       "description": "插件图标, 支持 svg, png, jpeg, 格式, 或者 http 网络链接, 本地文件名"
     },
-    "description": { "type": "string", "description": "插件 描述" },
-    "readme": { "type": "string" },
-    "author": { "type": "string", "description": "插件 作者名" }
+    "description": {
+      "description": "插件 描述",
+      "type": ["string", "object"],
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {"$ref": "#/definitions/IntlMessage"}
+      ]
+    },
+    "readme": {
+      "type": ["string", "object"],
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {"$ref": "#/definitions/IntlMessage"}
+      ]
+    },
+    "author": {
+      "description": "插件 作者名",
+      "type": ["string", "object"],
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {"$ref": "#/definitions/IntlMessage"}
+      ]
+    }
   }
 }
