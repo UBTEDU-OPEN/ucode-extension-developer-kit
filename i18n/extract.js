@@ -21,7 +21,7 @@ console.log(chalk.blue('接收的参数: '));
 console.log(options);
 
 function extractFormatJsMessages(inputPath, outputPath) {
-  const cmd = `npx formatjs extract --extract-source-location true --out-file ${outputPath} ${inputPath}`;
+  const cmd = `npx formatjs extract --extract-source-location true --additional-function-names="self.UCode.formatMessage,window.self.UCode.formatMessage" --out-file ${outputPath} "${inputPath}"`;
   console.log(chalk.cyan(cmd));
   const output = execSync(cmd);
   console.log(output.toString());
