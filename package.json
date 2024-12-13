@@ -1,8 +1,9 @@
 {
   "name": "@ubtech/ucode-extension-developer-kit",
   "version": "1.2.2",
-  "description": "",
+  "description": "ucode-extension-developer-kit",
   "main": "index.js",
+  "private": false,
   "bin": {
     "cua-hw-ws": "./hardware/ws-server.js",
     "cua-hw-udp": "./hardware/udp-tcp-server.js",
@@ -11,11 +12,16 @@
     "cua-build-dev": "./webpack/dev.js",
     "cua-i18n-extract": "./i18n/extract.js"
   },
-  "author": "alex.tan@ubtrobot.com",
+  "author": "ubtech <swenggroup@ubtrobot.com>(https://www.ubtrobot.com/)",
   "scripts": {
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --quiet --fix",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx . --quiet",
     "test": "jest"
+  
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UBTEDU-OPEN/ucode-extension-developer-kit"
   },
   "license": "MIT",
   "dependencies": {
@@ -52,7 +58,7 @@
     "ws": "^8.5.0"
   },
   "publishConfig": {
-    "registry": "http://10.10.1.132:9601"
+    "registry": "https://registry.npmjs.org"
   },
   "devDependencies": {
     "eslint-plugin-jest": "^26.2.2",
